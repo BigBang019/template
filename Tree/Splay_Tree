@@ -1,0 +1,220 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+template<class T>
+class SplayTree{
+    struct Node{
+        T val;
+        Node *left,*right,*parent;
+        Node(){}
+        Node(T val,Node * left, Node * right, Node * parent){
+            this->val=val;
+            this->left=left;
+            this->right=right;
+            this->parent=parent;
+        }
+    };
+    Node * root;
+    Node* left_single_rotate(Node * root,Node * now){
+        if (now==NULL) return NULL;
+        Node * parent=now->parent;
+        Node * grandparent=parent->parent;
+        Node * rc=now->right;
+
+        parent->left=rc;
+        if (rc) rc->parent=parent;
+
+        now->right=parent;
+        parent->parent=now;
+
+        now->parent=grandparent;
+        if (grandparent){
+            if (grandparent->left==parent){
+                grandparent->left=now;
+            }else grandparent->right=now;
+        }else root=now;
+        return root;
+    }
+    Node* right_single_rotate(Node * root,Node * now){
+        if (now==NULL) return NULL;
+        Node * parent=now->parent;
+        Node * grandparent=parent->parent;
+        Node * lc=now->left;
+
+        parent->right=lc;
+        if (lc) lc->parent=parent;
+
+        now->left=parent;
+        parent->parent=now;
+
+        now->parent=grandparent;
+        if (grandparent){
+            if (grandparent->left==parent){
+                grandparent->left=now;
+            }else grandparent->right=now;
+        }else root=now;
+        return root;
+    }
+    Node * right_left_rotate(Node *root,Node * now){
+        root=left_single_rotate(root,now);
+        root=right_single_rotate(root,now);
+        return root;
+    }
+    Node * left_right_rotate(Node *root,Node * now){
+        root=right_single_rotate(root,now);
+        root=left_single_rotate(root,now);
+        return root;
+    }
+    Node * left_double_rotate(Node *root,Node * now){
+        root=left_single_rotate(root,now->parent);
+        root=left_single_rotate(root,now);
+        return root;
+    }
+    Node * right_double_rotate(Node *root,Node * now){
+        root=right_single_rotate(root,now->parent);
+        root=right_single_rotate(root,now);
+        return root;
+    }
+    Node * up(Node * root,Node * now){
+        Node * parent,*grandparent;
+        bool R,L;
+        parent=now->parent;
+        grandparent=parent->parent;
+        R=(grandparent->right==parent);
+        L=(parent->left==now);
+        if (R){
+            if (L) root=right_left_rotate(root,now);
+            else root=right_double_rotate(root,now);
+        }else{
+            if (L) root=left_double_rotate(root,now);
+            else root=left_right_rotate(root,now);
+        }
+        return root;
+    }
+    Node * splay(Node * root, Node * now){
+        while (root->left!=now && root->right!=now && root!=now)
+            root=up(root,now);
+        if (root->left==now)
+            root=left_single_rotate(root,now);
+        else if (root->right==now)
+            root=right_single_rotate(root,now);
+        return root;
+    }
+    Node * search(Node * now,T key){
+        if (now==NULL) return NULL;
+        if (now->val< key) return search(now->right,key);
+        else if (now->val > key) return search(now->left,key);
+        else return now;
+    }
+    Node* insert(Node * now, Node * parent, T key){
+        if (now==NULL) {
+            now=new Node(key,NULL,NULL,parent);
+            return now;
+        }
+        if (now->val < key) now->right=insert(now->right,now,key);
+        else if (now->val > key) now->left=insert(now->left,now,key);
+        return now;
+    }
+    Node * findMin(Node * now){
+        if (now==NULL) return NULL;
+        if (now->left) return findMin(now->left);
+        else return now;
+    }
+    void inorder(Node * now){
+        if (now==NULL) return;
+        if (now->left) inorder(now->left);
+        cout<<now->val<<" ";
+        if (now->right) inorder(now->right);
+    }
+    void preorder(Node * now){
+        if (now==NULL) return;
+        cout<<now->val<<" ";
+        if (now->left) preorder(now->left);
+        if (now->right) preorder(now->right);
+    }
+    void sucorder(Node * now){
+        if (now==NULL) return;
+        if (now->left) sucorder(now->left);
+        if (now->right) sucorder(now->right);
+        cout<<now->val<<" ";
+    }
+public:
+    SplayTree(){
+        root=NULL;
+    }
+    bool search(T key){
+        Node * result=search(root,key);
+        if (result==NULL) return false;
+        root=splay(root,result);
+        return true;
+    }
+    bool insert(T key){
+        root=insert(root,NULL,key);
+    }
+    bool remove(T key){
+        Node * result=search(root,key);
+        if (result==NULL) return false;
+        root=splay(root,result);
+        Node * successor=findMin(root->right);
+        if (successor) {
+            root->val = successor->val;
+            if (successor==successor->parent->left) {
+                successor->parent->left = successor->right;
+                if (successor->right) successor->right->parent = successor->parent;
+            }else {
+                successor->parent->right=successor->right;
+                if (successor->right) successor->right->parent=successor->parent;
+            }
+            delete successor;
+        }else {
+            successor=root;
+            root=root->left;
+            if (root) root->parent=NULL;
+            delete successor;
+        }
+        return true;
+    }
+    void inorder(){
+        inorder(root);
+    }
+    void preorder(){
+        preorder(root);
+    }
+    void sucorder(){
+        sucorder(root);
+    }
+};
+
+int main() {
+
+    SplayTree<int> tree=SplayTree<int>();
+    while (true){
+        char ch;
+        int x;
+        scanf(" %c",&ch);
+        if (ch=='E') break;
+        switch(ch) {
+            case 'Q':
+                scanf("%d", &x);
+                printf("%d\n", tree.search(x));
+                break;
+            case 'I':
+                scanf("%d", &x);
+                tree.insert(x);
+                break;
+            case 'D':
+                scanf("%d",&x);
+                tree.remove(x);
+                break;
+            default:
+                tree.inorder();
+                cout<<"\n";
+                tree.preorder();
+                cout<<"\n";
+                tree.sucorder();
+                cout<<"\n";
+        }
+    }
+    return 0;
+}
