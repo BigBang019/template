@@ -53,7 +53,7 @@ void build(int l,int r,int dep){	//[l,r]
 	tot++;
 	int now = tot;
 	dim = dep % k;
-	int mid = l + r >> 1;
+	int mid = (l + r) / 2;
 	nth_element(point + l, point + mid, point + r + 1);
 	tree[now] = point[mid];
 	tree[now].lc = tree[now].rc = -1;
@@ -99,7 +99,7 @@ void query(int x,NODE t,int m){
 		dl = (smaller?1:-1)*value(xx, t);
 	if (~yy)
 		dr = (smaller?1:-1)*value(yy, t);
-	if ((smaller ? dl > dr : dl < dr))
+	if ( dl>dr )
 	{
 		swap(xx, yy);
 		swap(dl, dr);
@@ -109,7 +109,7 @@ void query(int x,NODE t,int m){
 	if (~yy && q.size() < m || dr < q.top().first)
 		query(yy, t, m);
 }
-vector<pair<ll,NODE>> query(NODE t,int m, bool flag){
+vector<pair<ll,NODE> > query(NODE t,int m, bool flag){
 	smaller = flag;
 	query(1, t, m);
 	vector<pair<ll, NODE> > b;
