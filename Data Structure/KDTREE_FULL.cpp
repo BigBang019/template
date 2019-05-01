@@ -1,3 +1,7 @@
+/*
+	k, point.l, point.r, point.d is needed
+	FUNCTION value is sometimes needed
+*/
 #include<bits/stdc++.h>
 using namespace std;
 
