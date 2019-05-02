@@ -1,3 +1,7 @@
+/*
+    空间开2+log(N)倍
+    静态区间查询第k小
+/*
 #include<bits/stdc++.h>
 using namespace std;
 typedef long long ll;
