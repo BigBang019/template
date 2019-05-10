@@ -4,6 +4,7 @@
 
 ```c++
 /*
+	initalize: c
 	维护a[i][j]数组
 	查询结果为(x2,y2)-(x1-1,y2)-(x2,y1-1)+(x1-1,y1-1)
 */
@@ -39,6 +40,7 @@ ll getSum(int x1,int x2,int y1,int y2){
 
 ```c++
 /*
+	initialize: c,d
 	维护差分数组d[i][j]
 */
 #include<bits/stdc++.h>
@@ -78,15 +80,10 @@ void add(int x1,int x2,int y1,int y2){
 
 ## 区间修改区间查询
 
-<a href="https://www.codecogs.com/eqnedit.php?latex=$$\sum_{i=1}^{x}\sum_{j=1}^{y}\sum_{k=1}^i\sum_{l=1}^j&space;d[k][l]&space;$$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?$$\sum_{i=1}^{x}\sum_{j=1}^{y}\sum_{k=1}^i\sum_{l=1}^j&space;d[k][l]&space;$$" title="$$\sum_{i=1}^{x}\sum_{j=1}^{y}\sum_{k=1}^i\sum_{l=1}^j d[k][l] $$" /></a>
-
-<a href="https://www.codecogs.com/eqnedit.php?latex=$$\newline=\sum_i^x\sum_j^yd[i][j]*(x-i&plus;1)*(y-j&plus;1)$$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?$$\newline=\sum_i^x\sum_j^yd[i][j]*(x-i&plus;1)*(y-j&plus;1)$$" title="$$\newline=\sum_i^x\sum_j^yd[i][j]*(x-i+1)*(y-j+1)$$" /></a>
-
-<a href="https://www.codecogs.com/eqnedit.php?latex=$$\newline=(x&plus;1)*(y&plus;1)*\sum_i^x\sum_j^y&space;d[i][j]-(y&plus;1)*\sum_i^x\sum_j^y&space;d[i][j]*i-(x&plus;1)*\sum_i^x\sum_j^y&space;d[i][j]*j&plus;\sum_i^x\sum_j^y&space;d[i][j]*i*j$$" target="_blank"><img src="https://latex.codecogs.com/gif.latex?$$\newline=(x&plus;1)*(y&plus;1)*\sum_i^x\sum_j^y&space;d[i][j]-(y&plus;1)*\sum_i^x\sum_j^y&space;d[i][j]*i-(x&plus;1)*\sum_i^x\sum_j^y&space;d[i][j]*j&plus;\sum_i^x\sum_j^y&space;d[i][j]*i*j$$" title="$$\newline=(x+1)*(y+1)*\sum_i^x\sum_j^y d[i][j]-(y+1)*\sum_i^x\sum_j^y d[i][j]*i-(x+1)*\sum_i^x\sum_j^y d[i][j]*j+\sum_i^x\sum_j^y d[i][j]*i*j$$" /></a>
-
-
 ```c++
-
+/*
+	initialize: c1,c2,c3,c4,d
+*/
 int lowbit(int x){
     return x & (-x);
 }
