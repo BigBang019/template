@@ -1,6 +1,7 @@
 namespace EDSCC{
     using namespace std;
     const int N = 1e5 + 10;
+    int n;
     int cnt, he[N], ne[N * 2], v[N * 2];
     void add(int x,int y){
         cnt++;
@@ -23,7 +24,7 @@ namespace EDSCC{
         {
             int p = v[i];
             if (!dfn[p]){
-                tanjan(x, i);
+                tanjan(p, i);
                 low[x] = min(low[x], low[p]);
                 if (low[p]>low[x])
                     bri[i] = bri[i ^ 1] = 1;
@@ -40,7 +41,7 @@ namespace EDSCC{
             int p = v[i];
             if (bri[i])
                 continue;
-            if (!blk[y])
+            if (!blk[p])
                 dfs(p, cl);
         }
     }
@@ -52,4 +53,4 @@ namespace EDSCC{
         }
     }
 }
-using namespace std;
+using namespace EDSCC;
