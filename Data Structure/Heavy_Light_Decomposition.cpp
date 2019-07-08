@@ -58,6 +58,7 @@ namespace HLD{
         cnt = 0;
         memset(he, 0, sizeof(he));
         memset(dep, 0, sizeof(dep));
+	memset(son,0,sizeof(son));
     }
     void pushdown(int x,int l,int r){
         if (l==r){
