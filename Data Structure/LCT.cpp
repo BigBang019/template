@@ -8,10 +8,10 @@ namespace LCT{
 	using namespace std;
 	const int N = 3e5 + 5;
 	struct NODE{
-		int fa, ch[2], v, sz;
+		int fa, ch[2], v, sz, mx, tag;
 		bool rev;
 		NODE(){
-			fa = ch[0] = ch[1] = 0;
+			fa = ch[0] = ch[1] = tag = mx = 0;
 			rev = 0;
 			sz = 1;
 		}
@@ -22,26 +22,42 @@ namespace LCT{
 	bool isleft(int x){
 		return tr[tr[x].fa].ch[0] == x;
 	}
-	void reverse(int x){					//LCT中的splay的有序性与深度相关
-		swap(tr[x].ch[0], tr[x].ch[1]);		//x变为根时，交换左右子树，保证中序遍历的有序性
+	void reverse(int x){
+		swap(tr[x].ch[0], tr[x].ch[1]);
 		tr[x].rev ^= 1;
 	}
-	void pushdown(int x){					//向下传递reverse的lazy标记
+	void pushdown(int x){
+		int l = tr[x].ch[0], r = tr[x].ch[1];
 		if (tr[x].rev){
-			if (tr[x].ch[0])
-				reverse(tr[x].ch[0]);
-			if (tr[x].ch[1])
-				reverse(tr[x].ch[1]);
+			if (l)
+				reverse(l);
+			if (r)
+				reverse(r);
 			tr[x].rev ^= 1;
 		}
+		if (tr[x].tag){
+			if (l) {
+				tr[l].tag += tr[x].tag;
+				tr[l].mx += tr[x].tag;
+				tr[l].v += tr[x].tag;
+			}
+			if (r){
+				tr[r].tag += tr[x].tag;
+				tr[r].mx += tr[x].tag;
+				tr[r].v += tr[x].tag;
+			}
+			tr[x].tag = 0;
+		}
 	}
-	//*********************************************
+	//*********************************************************
 	void pushup(int x){
-		tr[x].sz = tr[tr[x].ch[0]].sz + tr[tr[x].ch[1]].sz + 1;
+		int l = tr[x].ch[0], r = tr[x].ch[1];
+		tr[x].sz = tr[l].sz + tr[r].sz + 1;
+		tr[x].mx = max(tr[l].mx, max(tr[r].mx, tr[x].v));
 	}
-	//*********************************************
+	//*********************************************************
 	int st[N];
-	void pushto(int x){						//????
+	void pushto(int x){
 		int top = 0;
 		while (!isroot(x)){
 			st[top++] = x;
@@ -53,7 +69,7 @@ namespace LCT{
 		}
 	}
 	
-	void rotate(int x){						//旋转，与正常splay不同的原因是判断根节点的方式变了
+	void rotate(int x){
 		bool t = !isleft(x);
 		int fa = tr[x].fa, ffa = tr[fa].fa;
 
@@ -67,7 +83,7 @@ namespace LCT{
 		tr[fa].fa = x;
 		pushup(fa);
 	}
-	void splay(int x){						//与正常splay不同的原因是判断根节点的方式变了
+	void splay(int x){
 		pushto(x);
 		for (int fa = tr[x].fa; !isroot(x);rotate(x),fa=tr[x].fa)
 		{
@@ -76,7 +92,7 @@ namespace LCT{
 		}
 		pushup(x);
 	}
-	void access(int x){						//打通根节点到x的一条偏爱路径
+	void access(int x){
 		for (int p = 0; x; x = tr[p = x].fa)
 		{
 			splay(x);
@@ -84,7 +100,7 @@ namespace LCT{
 			pushup(x);
 		}
 	}
-	void makert(int x){						//make root
+	void makert(int x){
 		access(x);
 		splay(x);
 		reverse(x);
@@ -96,27 +112,39 @@ namespace LCT{
 			x = tr[x].ch[0];
 		return x;
 	}
-	void split(int x,int y){				//打通x-y的一条偏爱路径
+	void split(int x,int y){
 		makert(x);
 		access(y);
 		splay(y);
 	}
 	void link(int x,int y){
-		split(x, y);
+		makert(x);
 		tr[x].fa = y;
 	}
 	void cut(int x,int y){
 		split(x, y);
-		if (tr[y].ch[0]!=x || tr[x].ch[1])
-			return;
-		tr[x].fa = tr[y].ch[0] = 0;
+		tr[tr[y].ch[0]].fa = 0;
+		tr[y].ch[0] = 0;
+		pushup(y);
 	}
-	void modify(int x,int v){
-		access(x);
-		splay(x);
-		tr[x].v = v;
-		pushup(x);
+
+	//*********************************************************
+	void modify(int x,int y,int v){
+		split(x, y);
+		tr[y].tag += v;
+		tr[y].mx += v;
+		tr[y].v += v;
 	}
-	
+	int query(int x,int y){
+		split(x, y);
+		return tr[y].mx;
+	}
+	void init(int n){
+		for (int i = 0; i <= n;i++)
+		{
+			tr[i] = NODE();
+		}
+	}
+	//*********************************************************
 }
 using namespace LCT;
