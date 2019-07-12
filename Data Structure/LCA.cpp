@@ -6,7 +6,7 @@
 namespace LCA{
     using namespace std;
     typedef long long ll;
-    const int N = 4e4 + 5;
+    const int N = 2e3 + 5;
     int f[N][30];
     ll g[N][30];
 
@@ -74,6 +74,8 @@ namespace LCA{
     void init(){
         cnt = 0;
         memset(he, 0, sizeof(he));
+        memset(f, 0, sizeof(f));
+        memset(g, 0, sizeof(g));
     }
 }
 using namespace LCA;
