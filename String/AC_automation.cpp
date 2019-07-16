@@ -41,15 +41,15 @@ namespace AC{
             }
         }
         while (!q.empty()){
-            int now = q.front();
-            q.pop();
+            int now = q.front();                        //入队节点的失配指针已经建好
+            q.pop();                                    //出队节点的nxt一定指向合法位
             for (int i = 0; i < 26;i++)
             {
                 if (nxt[now][i]==-1)
-                    nxt[now][i] = nxt[fail[now]][i];
+                    nxt[now][i] = nxt[fail[now]][i];    //没有后继点则指向失配节点的下一个相应位置
                 else{
                     int x = nxt[now][i];
-                    fail[x] = nxt[fail[now]][i];
+                    fail[x] = nxt[fail[now]][i];        //失配指针指向父亲失配节点的相应位置
                     q.push(x);
                 }
             }
@@ -67,7 +67,7 @@ namespace AC{
             while (tmp!=root){
                 res += cnt[tmp];
                 cnt[tmp] = 0;           //已经被统计过，所以置0
-                tmp = fail[tmp];
+                tmp = fail[tmp];        //利用失配来遍历当前字符所有位置
             }
         }
         return res;
