@@ -1,5 +1,6 @@
 /****************************
-  矩阵快速幂
+  矩阵快速幂slower_but_convenient
+  数组版本下翻
 *****************************/
 namespace MATRIX{
     using namespace std;
