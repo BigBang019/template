@@ -8,6 +8,8 @@
     cnt[x]：与以x结尾的最长回文子串相同的子串的个数
     nxt[x][c]：编号为x的节点表示的回文串在两边添加字符c以后变成的回文串的编号
     s[x]：第x次添加的字符（一开始设S[0] = -1，也可以是任意一个在串S中不会出现的字符）
+    https://www.cnblogs.com/nbwzyzngyl/p/8260921.html
+    https://blog.csdn.net/stevensonson/article/details/81748093
 ***********************************************************************************/
 struct PAM{
     int nxt[N][27]; //next指针，next指针和字典树类似，指向的串为当前串两端加上同一个字符构成
@@ -45,7 +47,7 @@ struct PAM{
         return x;
     }
 
-    void add(int c){
+    void extend(int c){
         S[++n] = c;
         int cur = get_fail(last); //通过上一个回文串找这个回文串的匹配位置
         if (!nxt[cur][c])
