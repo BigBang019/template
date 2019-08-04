@@ -1,6 +1,7 @@
 /****************************************************************************
-  https://www.cnblogs.com/hyghb/p/8445112.html
+  https://blog.csdn.net/qq_35649707/article/details/66473069
   https://www.cnblogs.com/mangoyang/p/9760416.html
+  https://www.cnblogs.com/candy99/p/6374177.html
 ****************************************************************************/
 struct SAM
 {
