@@ -50,3 +50,32 @@ namespace Seg{
             return query(x << 1 | 1, mid + 1, r, k - tree[x << 1] - inmid);
     }
 }
+/**************************************************************************
+    区间离散化线段树
+**************************************************************************/
+/*
+ *  仍用<l,r>标记一个节点
+ *  但是节点代表一个区间[l,r+1)
+*/
+void update(int x,int l,int r,int ql,int qr,int v){
+    if (ql>r || qr<l) return;
+    if (ql<=l && qr>=r){
+        tree[x].pb(v);
+        return;
+    }
+    int mid = l + r >> 1;
+    update(x << 1, l, mid, ql, qr, v);
+    update(x << 1 | 1, mid + 1, r, ql, qr, v);
+}
+
+/*
+ * 离散化时应当离散化区间端点l与r+1
+ */
+    b.pb(l), b.pb(r+1);
+    sort(ALL(b));
+b.erase(unique(ALL(b)), b.end());
+/*
+ * 修改时修改[l,r+1)
+ * 但是节点是由<l,r>标记的因此右端点-1
+ */
+update(1, 1, len, has(E[i].l), has(E[i].r) - 1, i);
