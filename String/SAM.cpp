@@ -2,6 +2,10 @@
   https://blog.csdn.net/qq_35649707/article/details/66473069
   https://www.cnblogs.com/mangoyang/p/9760416.html
   https://www.cnblogs.com/candy99/p/6374177.html
+  
+  每个节点表示某一endpos等价类（标记为S）
+  连边nxt[x][c]=y表示Sx后面加上字符c就变成了Sy
+  fa[x]=y表示Sx是Sy的真子集，x节点的孩子失配时利用fa[x]跳转，查找时相当于放宽了限制
 ****************************************************************************/
 struct SAM
 {
