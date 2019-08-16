@@ -14,15 +14,16 @@ struct SAM
     ll dp[N];
     int newnode(int l)
     {
+        ++tot;
         fa[tot] = -1;
         for (int i = 0; i < 27; ++i)
             nxt[tot][i] = -1;
-        len[tot++] = l;
-        return tot - 1;
+        len[tot] = l;
+        return tot;
     }
     void init()
     {
-        tot = 0;
+        tot = -1;
         memset(dp, -1, sizeof(dp));
         last = root = newnode(0);
     }
@@ -58,17 +59,24 @@ struct SAM
         last = cur;
     }
 
-    ll dfs(int u)
-    {
-        if (dp[u] != -1)
-            return dp[u];
-        ll res = 1;
-        for (int i = 0; i < 26; ++i)
+    int id[N];
+    int v[N];
+    int sum[N];
+    void getSum(){
+        for (int i = 1; i <= tot;i++)
+            sum[i] = 1;
+        int mx = 0;
+        for (int i = 1; i <= tot; i++)
+            mx = max(mx, len[i]), ++v[len[i]];
+        for (int i = 1; i <= mx; i++)
+            v[i] += v[i - 1];
+        for (int i = 1; i <= tot; i++)
+            id[v[len[i]]--] = i;
+        for (int i = tot; i; i--)
         {
-            if (nxt[u][i] == -1)
-                continue;
-            res += dfs(nxt[u][i]);
+            int t = id[i];
+            for (int j = 0; j < 26;j++)
+                sum[t] += sum[nxt[t][j]];
         }
-        return dp[u] = res;
     }
 } sam;
