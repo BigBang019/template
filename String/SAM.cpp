@@ -10,8 +10,9 @@
 struct SAM
 {
     int nxt[N][27], fa[N], len[N];
+    int sz[N];
     int root, tot, last;
-    ll dp[N];
+    bool T;//T=1位置不同的相同子串算多个;T=0本质相同的子串只算一次
     int newnode(int l)
     {
         ++tot;
@@ -24,13 +25,13 @@ struct SAM
     void init()
     {
         tot = -1;
-        memset(dp, -1, sizeof(dp));
         last = root = newnode(0);
     }
     void extend(int x)
     {
         int p = last;
         int cur = newnode(len[p] + 1);
+        sz[cur] = 1;
         while (p != -1 && nxt[p][x] == -1)
         {
             nxt[p][x] = cur;
@@ -62,21 +63,33 @@ struct SAM
     int id[N];
     int v[N];
     int sum[N];
+    
     void getSum(){
-        for (int i = 1; i <= tot;i++)
-            sum[i] = 1;
         int mx = 0;
         for (int i = 1; i <= tot; i++)
             mx = max(mx, len[i]), ++v[len[i]];
         for (int i = 1; i <= mx; i++)
             v[i] += v[i - 1];
-        for (int i = 1; i <= tot; i++)
+        for (int i = 1; i <= tot; i++){
             id[v[len[i]]--] = i;
+        }
         for (int i = tot; i; i--)
         {
             int t = id[i];
-            for (int j = 0; j < 26;j++)
-                sum[t] += sum[nxt[t][j]];
+            if (T)
+                sz[fa[t]] += sz[t];
+            else
+                sz[t] = 1;
+        }
+        // sz[0] = 0;//空串不能算在内
+        for (int i = tot; ~i;i--)
+        {
+            int t = id[i];
+            sum[t] = sz[t];
+            for (int j = 0; j < 26;j++) if (~nxt[t][j])
+            {
+                 sum[t] += sum[nxt[t][j]];
+            }
         }
     }
 } sam;
