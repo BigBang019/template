@@ -1,3 +1,24 @@
+void init(){
+    LOG[2] = 1;
+    for (register int i = 3; i <= int(1e5); ++i)
+    {
+        LOG[i] = LOG[i / 2] + 1;
+    }
+}
+void dfs(int x, int fa){
+    id[dfs_in[x] = ++dfn] = x;
+    seq[++dfsn] = x;
+    first[x] = dfsn;
+    dep[x] = dep[fa] + 1;
+    for (int i = he[x]; i; i = ne[i])
+    {
+        int p = v[i];
+        if (p==fa) continue;
+        dfs(p, x);
+        seq[++dfsn] = x;
+    }
+    dfs_out[x] = dfn;
+}
 void ST(){
     for (int i = 1; i <= dfsn;i++)
     {
@@ -13,13 +34,11 @@ void ST(){
         }
     }
 }
-int lca(int x,int y){
+inline int lca(int x,int y){
     int ix = first[x], iy = first[y];                       //index of its first shown in dfs sequence
     if (ix>iy)
         swap(ix, iy);
-    int k = 0;
-    while ((1 << (1 + k)) <= iy - ix + 1)
-        k++;
+    int k = LOG[iy - ix + 1];
     int a = dp[ix][k];
     int b = dp[iy - (1 << k) + 1][k];
     return dep[a] < dep[b] ? a : b;
