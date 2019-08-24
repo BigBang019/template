@@ -23,7 +23,7 @@ struct PAM{
     int p;      //节点指针
 
     int newnode(int l){ //新建节点
-        for (int i = 0; i < N; ++i)
+        for (int i = 0; i < 27; ++i)
             nxt[p][i] = 0;
         cnt[p] = 0;
         num[p] = 0;
