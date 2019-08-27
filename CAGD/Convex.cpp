@@ -1,7 +1,7 @@
 struct Point{
 	ll x, y;
 	Point(){}
-	Point(int x, int y) : x(x), y(y){}
+	Point(ll x, ll y) : x(x), y(y){}
 	Point operator + (const Point& b) const {
 		return Point(x + b.x, y + b.y);
 	}
@@ -28,7 +28,7 @@ struct Convex{
 		st.push_back(a);
 	}
 	bool query(const Point& a,const Point& b){
-		int l = 0, r = int(st.size()) - 1;
+		int l = 0, r = int(st.size()) - 2;
 		while (l<r){
 			int mid = l + r >> 1;
 			if (cross_product(st[mid], a, b) < cross_product(st[mid+1], a, b)){
