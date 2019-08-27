@@ -8,3 +8,6 @@
     
 ### BIT+Treap样板->Code_Library
     /Data_Structure/bzoj_3262.cpp
+
+### Seg+Convex->Code_Library
+    /Data_Structure/luogu_P4758.cpp
