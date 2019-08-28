@@ -11,3 +11,7 @@
 
 ### Seg+Convex->Code_Library
     /Data_Structure/luogu_P4758.cpp
+
+### 图分块样板->Code_Library
+    /contest/2019 Multi-University Training Contest/nowcoder03/A.cpp
+    
