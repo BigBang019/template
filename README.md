@@ -15,3 +15,5 @@
 ### 图分块样板->Code_Library
     /contest/2019 Multi-University Training Contest/nowcoder03/A.cpp
     
+### BIT维护最近点对样板->Code_Library
+    /contest/2019 Multi-University Training Contest/nowcoder08/D.cpp
