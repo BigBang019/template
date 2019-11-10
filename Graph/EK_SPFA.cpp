@@ -22,8 +22,8 @@ int tot;
 int n,m;
 int s,t;
 
-int pre[maxn]; //¼ÇÂ¼Â·¾¶ 
-int dist[maxn]; //µ½Ã¿¸öµã¿ÉÐÐÔö¹ãÂ·µÄ×îÐ¡·ÑÓÃºÍ 
+int pre[maxn]; //记录路径 
+int dist[maxn]; //到每个点可行增广路的最小费用和 
 int vis[maxn];
 
 // starting from 0
@@ -55,7 +55,9 @@ inline void addedge(int x,int y,int c,int w) {
 
 queue<int> que;
 
-// dijkstraÄ§¸ÄÐèÒª½â¾ö·´Ïò±ß¸º»·ÎÊÌâ 
+// dijkstra魔改需要解决反向边负环问题 
+// 可以证明不可能有负环，所以只要魔改负权边 
+ 
 bool SPFA() {
 	for (int i=0;i<=n;i++) {
 		vis[i]=0;
@@ -88,14 +90,14 @@ bool SPFA() {
     }
 }
 
-int CostFlow(int &flow) { // EKËã·¨ 
+int CostFlow(int &flow) { // EK算法 
 	int mincost = 0;
-	while (SPFA()) { // ÄÜÕÒµ½Ôö¹ãÂ·
+	while (SPFA()) { // 能找到增广路
 		int Min = INF;
-		for (int i=t;i!=s;i=edge[pre[i]].from) { // Ñ°ÕÒ×îÐ¡Á÷
+		for (int i=t;i!=s;i=edge[pre[i]].from) { // 寻找最小流
 			Min = min(Min,edge[pre[i]].cap - edge[pre[i]].flow);
 		}
-		for (int i=t;i!=s; i=edge[pre[i]].from) { //´¦ÀíËùÓÐ±ß 
+		for (int i=t;i!=s; i=edge[pre[i]].from) { //处理所有边 
 			edge[pre[i]].flow+=Min;
             edge[pre[i]^1].flow-=Min;
 		}
