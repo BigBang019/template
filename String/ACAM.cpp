@@ -5,15 +5,12 @@
         当x的nxt[i]不存在时，它的意义类似优化常数后的kmp的next数组（nxt[i]失配时应该直接匹配的位置）
     因为最长公共前缀end的节点深度一定小于我，实现时使用bfs
 */
-namespace AC{
-    typedef long long ll;
-    using namespace std;
-    const int N = 1e6 + 5;
-    int nxt[N][30], fail[N], cnt[N];
+struct ACAM{
+    int nxt[N][B], fail[N], cnt[N];
     int tot, root;
     int newNODE(){
         tot++;
-        for (int i = 0; i < 26;i++)
+        for (int i = 0; i < B;i++)
             nxt[tot][i] = -1;
         cnt[tot] = 0;
         return tot;
@@ -37,7 +34,7 @@ namespace AC{
     void build(){
         queue<int> q;
         fail[root] = root;
-        for (int i = 0; i < 26;i++)
+        for (int i = 0; i < B;i++)
         {
             if (nxt[root][i]==-1)
                 nxt[root][i] = root;
@@ -50,7 +47,7 @@ namespace AC{
         while (!q.empty()){
             int now = q.front(); 
             q.pop();
-            for (int i = 0; i < 26;i++)
+            for (int i = 0; i < B;i++)
             {
                 if (nxt[now][i]==-1)
                     nxt[now][i] = nxt[fail[now]][i];
@@ -79,5 +76,4 @@ namespace AC{
         }
         return res;
     }
-}
-using namespace AC;
+} ac;
